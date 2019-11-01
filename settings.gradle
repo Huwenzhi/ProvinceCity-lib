@@ -1,0 +1,2 @@
+include ':app', ':provinecitylibrary'
+rootProject.name='ProvinceCity-lib'
