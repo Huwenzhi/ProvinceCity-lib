@@ -34,36 +34,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProvinceView {
-    private final String TAG = "ProvinceView";
-    private Dialog dialog;
-    private RecyclerView myRecycler;
-    private View view;
-    private SelectAdapter selectAdapter;
-    private List<ProvinceInfo> states;
-    private List<MultiItemEntity> multiItemEntityList = new ArrayList<>();
-    private List<MultiItemEntity> multiItemEntityListcopry = new ArrayList<>();
-    private LinearLayout proLayout, cityLayout, areaLayout, streetLayout;
-    private TextView proName, cityName, areaName, streetName;
-    private Activity mcontext;
+    private static final String TAG = "ProvinceView";
+    static Dialog dialog;
+    static RecyclerView myRecycler;
+    static View view;
+    static SelectAdapter selectAdapter;
+    static List<ProvinceInfo> states;
+    static List<MultiItemEntity> multiItemEntityList = new ArrayList<>();
+    static List<MultiItemEntity> multiItemEntityListcopry = new ArrayList<>();
+    static LinearLayout proLayout, cityLayout, areaLayout, streetLayout;
+    static TextView proName, cityName, areaName, streetName;
+    static Activity mcontext;
 
-    ProvinceInfo provinceInfo;
-    CityInfo cityInfo;
-    AreaInfo areaInfo;
-    StreetInfo streetInfo;
-    AdrSelectListener adrSelectListener;
-
-    public ProvinceView setAdrSelectListener(AdrSelectListener adrSelectListener) {
-        this.adrSelectListener = adrSelectListener;
-        return this;
-    }
+    static ProvinceInfo provinceInfo;
+    static  CityInfo cityInfo;
+    static   AreaInfo areaInfo;
+    static  StreetInfo streetInfo;
 
     public ProvinceView(Activity mcontext) {
         this.mcontext = mcontext;
-        initDialog();
-        initEvent();
+//        initView();
+//        initDialog();
     }
 
-    private ProvinceView initDialog() {
+    public static void initDialog(Activity contenxt) {
+        mcontext = contenxt;
         dialog = new Dialog(mcontext);
         initView();
         view.setMinimumWidth(10000);
@@ -80,9 +75,11 @@ public class ProvinceView {
         dialog.getWindow().setDimAmount(0f);
         //设置该属性，dialog可以铺满屏幕
         dialog.getWindow().setBackgroundDrawable(null);
-        dialog.show();
+
         initadapter(mcontext);
-        return this;
+        dialog.show();
+        slideToUp(dialog.getWindow().findViewById(R.id.layout));
+
     }
 
     public boolean isDialog() {
@@ -92,8 +89,7 @@ public class ProvinceView {
 
     public void show() {
         if (dialog != null && !dialog.isShowing()) {
-
-            slideToUp(dialog.getWindow().findViewById(R.id.layout));
+            dialog.show();
         }
     }
 
@@ -105,7 +101,7 @@ public class ProvinceView {
         }
     }
 
-    public void initView() {
+    public static void initView() {
 
         view = View.inflate(mcontext, R.layout.pop_view, null);
         myRecycler = view.findViewById(R.id.my_recy);
@@ -127,7 +123,7 @@ public class ProvinceView {
      *
      * @param context
      */
-    private void initadapter(Activity context) {
+    private static void initadapter(Activity context) {
         List<ProvinceInfo> list = getStates(context);
         for (ProvinceInfo provinceInfo : list) {
             multiItemEntityList.add(provinceInfo);
@@ -136,16 +132,14 @@ public class ProvinceView {
         selectAdapter = new SelectAdapter(context, multiItemEntityList);
         myRecycler.setLayoutManager(new LinearLayoutManager(context));
         myRecycler.setAdapter(selectAdapter);
-
+        initEvent();
 
     }
 
-    private void initEvent() {
+    private static void initEvent() {
         proLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                proName.setText("----------");
-                cityLayout.setVisibility(View.VISIBLE);
                 defaultTextColor();
                 getProines();
                 proName.setTextColor(mcontext.getResources().getColor(R.color.md_red_600));
@@ -197,20 +191,20 @@ public class ProvinceView {
 
     }
 
-    private void defaultTextColor() {
+    private static void defaultTextColor() {
         proName.setTextColor(mcontext.getResources().getColor(R.color.md_black_1000));
         cityName.setTextColor(mcontext.getResources().getColor(R.color.md_black_1000));
         areaName.setTextColor(mcontext.getResources().getColor(R.color.md_black_1000));
         streetName.setTextColor(mcontext.getResources().getColor(R.color.md_black_1000));
     }
 
-    private void getProines() {
+    private static void getProines() {
         multiItemEntityList.clear();
         multiItemEntityList.addAll(multiItemEntityListcopry);
     }
 
 
-    private void changeList(MultiItemEntity multiItemEntity) {
+    private static void changeList(MultiItemEntity multiItemEntity) {
         defaultTextColor();
         if (multiItemEntity.getItemType() == 0) {
             provinceInfo = (ProvinceInfo) multiItemEntity;
@@ -240,14 +234,12 @@ public class ProvinceView {
             streetName.setTextColor(mcontext.getResources().getColor(R.color.md_red_600));
             streetInfo = (StreetInfo) multiItemEntity;
             streetName.setText(streetInfo.getName());
-            adrSelectListener.onSelcet(provinceInfo,cityInfo,areaInfo,streetInfo);
-
         }
 
 
     }
 
-    private void getStreets() {
+    private static void getStreets() {
         List<StreetInfo> streetInfos = areaInfo.getChildren();
         multiItemEntityList.clear();
         for (StreetInfo streetInfo : streetInfos) {
@@ -255,7 +247,7 @@ public class ProvinceView {
         }
     }
 
-    private void getAreaInfo() {
+    private static void getAreaInfo() {
         List<AreaInfo> areaInfos = cityInfo.getChildren();
         multiItemEntityList.clear();
         for (AreaInfo areaInfo : areaInfos) {
@@ -263,7 +255,7 @@ public class ProvinceView {
         }
     }
 
-    private void getCities() {
+    private static void getCities() {
         List<CityInfo> cityInfos = provinceInfo.getChildren();
         multiItemEntityList.clear();
         for (CityInfo cityInfo : cityInfos) {
@@ -272,7 +264,7 @@ public class ProvinceView {
     }
 
 
-    public List<ProvinceInfo> getStates(Context context) {
+    public static List<ProvinceInfo> getStates(Context context) {
         InputStream is = null;
         ByteArrayOutputStream bos = null;
         try {
@@ -304,7 +296,7 @@ public class ProvinceView {
         return null;
     }
 
-    public void slideToUp(View view) {
+    public static void slideToUp(View view) {
         Animation slide = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
                 Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
                 1.0f, Animation.RELATIVE_TO_SELF, 0.0f);

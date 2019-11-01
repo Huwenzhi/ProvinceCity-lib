@@ -44,15 +44,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showAdr(final TextView textView) {
-        ProvinceView provinceView = new ProvinceView(this);
-        provinceView.initView();
-        provinceView.setAdrSelectListener(new AdrSelectListener() {
-            @Override
-            public void onSelcet(ProvinceInfo provinceInfo, CityInfo cityInfo, AreaInfo areaInfo, StreetInfo streetInfo) {
-                textView.setText(provinceInfo.getName() + cityInfo.getName() + areaInfo.getName() + streetInfo.getName());
-
-            }
-        }).show();
+        ProvinceView .initDialog(this);
     }
 
     public void onDialog() {
