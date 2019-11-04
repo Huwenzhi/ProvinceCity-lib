@@ -4,16 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minWidth="10000dp"
+    android:id="@+id/layout_item"
+    android:gravity="center_vertical"
     android:orientation="horizontal">
     <!--    当水平布满的核心-->
 
     <TextView
         android:id="@+id/item_tv"
         android:textColor="#000"
+        android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
         tools:text="北京市" />
+    <TextView
+        android:id="@+id/select_flag"
+        android:textColor="?attr/colorPrimary"
+        android:layout_marginRight="6dp"
+        android:text="√"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 
 </LinearLayout>

@@ -17,7 +17,15 @@ public class AreaInfo implements MultiItemEntity {
     private String code;
     private String name;
     private List<StreetInfo> children;
+    private boolean checked;
 
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
     public String getCode() {
         return TextUtils.isEmpty(code) ? "" : code;
     }

@@ -24,7 +24,7 @@ public class SelectAdapter extends RecyclerView.Adapter {
     Context context;
     List<MultiItemEntity> provinceInfos;
     OnItemClickListener onItemClickListener;
-
+    ProvinceInfo provinceInfo;
 
     public SelectAdapter(Context context, List<MultiItemEntity> provinceInfos) {
         this.context = context;
@@ -45,15 +45,35 @@ public class SelectAdapter extends RecyclerView.Adapter {
         if (itemEntity.getItemType() == 0) {
             ProvinceInfo provinceInfo = (ProvinceInfo) itemEntity;
             selectViewHolder.adr.setText(provinceInfo.getName());
+            if (this.provinceInfo!=null&&this.provinceInfo.getCode().equals(provinceInfo.getCode())){
+                ((SelectViewHolder) holder).selectFlag.setVisibility(View.VISIBLE);
+            }else {
+                ((SelectViewHolder) holder).selectFlag.setVisibility(View.GONE);
+            }
         } else if (itemEntity.getItemType() == 1) {
             CityInfo cityInfo = (CityInfo) itemEntity;
             selectViewHolder.adr.setText(cityInfo.getName());
+            if (cityInfo.isChecked()){
+                ((SelectViewHolder) holder).selectFlag.setVisibility(View.VISIBLE);
+            }else {
+                ((SelectViewHolder) holder).selectFlag.setVisibility(View.GONE);
+            }
         } else if (itemEntity.getItemType() == 2) {
             AreaInfo areaInfo = (AreaInfo) itemEntity;
             selectViewHolder.adr.setText(areaInfo.getName());
+            if (areaInfo.isChecked()){
+                ((SelectViewHolder) holder).selectFlag.setVisibility(View.VISIBLE);
+            }else {
+                ((SelectViewHolder) holder).selectFlag.setVisibility(View.GONE);
+            }
         } else if (itemEntity.getItemType() == 3) {
             StreetInfo streetInfo = (StreetInfo) itemEntity;
             selectViewHolder.adr.setText(streetInfo.getName());
+            if (streetInfo.isChecked()){
+                ((SelectViewHolder) holder).selectFlag.setVisibility(View.VISIBLE);
+            }else {
+                ((SelectViewHolder) holder).selectFlag.setVisibility(View.GONE);
+            }
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,14 +92,20 @@ public class SelectAdapter extends RecyclerView.Adapter {
         this.onItemClickListener = onItemClickListener;
     }
 
+    public void setSelectProvine(ProvinceInfo provinceInfo) {
+        this.provinceInfo=provinceInfo;
+    }
+
 
     class SelectViewHolder extends RecyclerView.ViewHolder {
-        private TextView adr;
+        private TextView adr,selectFlag;
+
 
         public SelectViewHolder(@NonNull View itemView) {
             super(itemView);
 
             adr = itemView.findViewById(R.id.item_tv);
+            selectFlag = itemView.findViewById(R.id.select_flag);
         }
     }
 }
